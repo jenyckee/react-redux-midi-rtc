@@ -92,8 +92,14 @@ const ACTION_HANDLERS = {
     return { ... state, connectionId: action.connectionId }
   },
   [CONNECT]: (state, action) => {
-    console.log('connection', action)
-    return { ... state, peers: state.peers.push(action.peerId) }
+    console.log('connect', action)
+    let c = state.connection.connect(action.peerId, {
+        label: 'control',
+        serialization: 'none',
+        metadata: {message: 'hi i want to music with you!'}
+      });
+    let newPeers = (state.peers[action.peerId] = c)
+    return { ... state, peers: newPeers}
   }
 }
 
@@ -102,7 +108,7 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 
 
-const initialState = { connectionId: "Not connected", connection: null, peers: [] }
+const initialState = { connectionId: "Not connected", connection: null, peers: {} }
 export default function counterReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
 

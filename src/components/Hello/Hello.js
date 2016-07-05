@@ -15,7 +15,6 @@ class Hello extends React.Component {
     return (
       <div>
         <h3>I am {this.props.connectionId}!</h3>
-        <input id="peer"></input>
         <button onClick={this.testConnection.bind(this)}>Connect</button>
       </div>
     )

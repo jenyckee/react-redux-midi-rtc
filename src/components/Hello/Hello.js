@@ -3,18 +3,13 @@ import classes from './Hello.scss'
 
 class Hello extends React.Component {
 
-  componentDidMount() {
-    this.props.initRTC('bnon5rifq5dygb9', 3)
-  }
-
   testConnection() {
-    this.props.emitRTC('yo')
+    this.props.emitRTC(this.props.routeParams.id)
   }
 
   render () {
     return (
       <div>
-        <h3>I am {this.props.connectionId}!</h3>
         <button onClick={this.testConnection.bind(this)}>Connect</button>
       </div>
     )

@@ -1,20 +1,40 @@
 // We only need to import the modules necessary for initial render
 import CoreLayout from '../layouts/CoreLayout/CoreLayout'
+import { injectReducer } from '../store/reducers'
 import Home from './Home'
 import CounterRoute from './Counter'
-import ConductorRoute from './Conductor'
+import PlayerRoute from './Player'
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
 
 export const createRoutes = (store) => ({
   path: '/',
-  component: CoreLayout,
+  // component: CoreLayout,
   indexRoute: Home,
   childRoutes: [
     CounterRoute(store),
-    ConductorRoute(store),
-  ]
+    PlayerRoute(store),
+  ],
+
+  getComponent (nextState, cb) {
+    /*  Webpack - use 'require.ensure' to create a split point
+        and embed an async module loader (jsonp) when bundling   */
+    require.ensure([], (require) => {
+      /*  Webpack - use require callback to define
+          dependencies for bundling   */
+      const Conductor = require('../layouts/CoreLayout').default
+      const reducer = require('../modules/conductor').default
+
+      /*  Add the reducer to the store on key 'conductor'  */
+      injectReducer(store, { key: 'conductor', reducer })
+
+      /*  Return getComponent   */
+      cb(null, Conductor)
+
+    /* Webpack named bundle   */
+    }, 'conductor')
+  }
 })
 
 /*  Note: childRoutes can be chunked or otherwise loaded programmatically

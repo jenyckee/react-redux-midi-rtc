@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import classnames from 'classnames'
-import { noteDown, noteUp } from '../redux/modules/midi'
+import { noteDown, noteUp } from '../../modules/midi'
 
 export class Note extends React.Component<void, Props, void> {
   classList () {
@@ -18,7 +17,7 @@ export class Note extends React.Component<void, Props, void> {
   }
   render () {
     return (
-      <div className={this.classList()} onMouseDown={this.noteDown.bind(this)} onMouseUp={this.noteUp.bind(this)}></div>
+      <div onMouseDown={this.noteDown.bind(this)} onMouseUp={this.noteUp.bind(this)}></div>
     )
   }
 }

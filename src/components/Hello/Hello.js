@@ -1,5 +1,7 @@
 import React from 'react'
 import classes from './Hello.scss'
+import Note from '../Note/Note'
+import teoria from 'teoria'
 
 class Hello extends React.Component {
 
@@ -20,6 +22,7 @@ class Hello extends React.Component {
     return (
       <div>
         <h3>Connect to the conductor!</h3>
+        <Note note={teoria.note('c4')} />
         <button onClick={this.makeConnection.bind(this)}>Connect</button>
         <button onClick={this.testConnection.bind(this)}>Send</button>
       </div>

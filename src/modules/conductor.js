@@ -153,8 +153,11 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 
-
-const initialState = Immutable.Map({ connectionId: '', connection: null, peers: Immutable.List() })
+const initialState = Immutable.Map({
+    connectionId: '',
+    connection: null,
+    peers: Immutable.List(),
+  })
 export default function conductorReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
 

@@ -1,15 +1,44 @@
 import React from 'react'
-import DuckImage from '../assets/Duck.jpg'
 import classes from './HomeView.scss'
+import { connect } from 'react-redux'
+import { initRTC } from '../../../modules/conductor'
+import { IndexLink, Link } from 'react-router'
 
-export const HomeView = () => (
-  <div>
-    <h4>Welcome!</h4>
-    <img
-      alt='This is a duck, because Redux!'
-      className={classes.duck}
-      src={DuckImage} />
-  </div>
-)
 
-export default HomeView
+export class HomeView extends React.Component {
+
+  componentDidMount() {
+    this.props.initRTC('bnon5rifq5dygb9', 3)
+  }
+
+  render() {
+    return (
+        <div>
+          <h4>Welcome!</h4>
+          <Link to={'/player/'+this.props.connectionId} target="_blank">
+            Player
+          </Link>
+          <h3>I am {this.props.connectionId}!</h3>
+        </div>
+      )
+  }
+}
+
+const mapActionCreators = {
+  initRTC: initRTC,
+}
+
+const mapStateToProps = (state) => {
+  return {
+    connectionId: state.conductor.get('connectionId')
+  }
+}
+
+HomeView.propTypes = {
+  connectionId: React.PropTypes.string.isRequired,
+  initRTC: React.PropTypes.func.isRequired,
+}
+
+export default connect(mapStateToProps, mapActionCreators)(HomeView)
+
+// export default HomeView

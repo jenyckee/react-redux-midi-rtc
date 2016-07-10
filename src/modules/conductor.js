@@ -1,26 +1,37 @@
 
 import Peer from 'peerjs'
+import Immutable from 'immutable'
 
 // ------------------------------------
 // Constants
 // ------------------------------------
 export const CONNECT = 'CONNECT'
+export const ONCONNECT = 'ONCONNECT'
 export const SEND = 'SEND'
 export const OPEN = 'OPEN'
 export const EMIT = 'EMIT'
 export const INIT = 'INIT'
+export const DATA = 'DATA'
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function connectRTC (id) {
+export function onConnectRTC (c) {
+  return {
+    type: ONCONNECT,
+    peerId: c
+  }
+}
+
+export function connectRTC (c) {
   return {
     type: CONNECT,
-    peerId: id
+    connection: c
   }
 }
 
 export function openRTC (id) {
+  console.log('OPEN', id)
   return {
     type: OPEN,
     connectionId: id
@@ -33,7 +44,7 @@ export function initRTC (apiKey, debugLevel) {
       let c = new Peer({
         key: apiKey,
         debug: debugLevel
-      }).on('connection', connectRTC)
+      }).on('connection', (c) => dispatch(connectRTC(c)))
         .on('error', error)
         .on('open', (id) => dispatch(openRTC(id)))
 
@@ -41,6 +52,13 @@ export function initRTC (apiKey, debugLevel) {
 
       resolve()
     })
+  }
+}
+
+export function dataRTC (data) {
+  return {
+    type: DATA,
+    data: data
   }
 }
 
@@ -69,37 +87,65 @@ export const actions = {
   emitRTC
 }
 
+function eachActiveConnection(state, fn) {
+  var actives = state.get('peers')
+  var checkedIds = {}
+  actives.forEach(function(peerId, index) {
+    if (!checkedIds[peerId]) {
+      var conns = state.get('connection').connections[peerId];
+      conns.forEach(fn)
+    }
+    checkedIds[peerId] = 1;
+  });
+}
+
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
+  [DATA]: (state, action) => {
+    console.log(action.data)
+    return state
+  },
   [INIT]: (state, action) => {
-    console.log(state)
-
-    return { ... state, connection: action.connection }
+    return state.set('connection', action.connection)
   },
   [SEND]: (state, action) => {
+    eachActiveConnection(state, function(c) {
+      c.send(action.message)
+    })
     return state
   },
   [EMIT]: (state, action) => {
-    state.peers.forEach((peerId) => {
-      let peer = state.connection[peerId]
+    eachActiveConnection(state, function(c) {
+      c.send(action.message)
     })
     return state
   },
   [OPEN]: (state, action) => {
-    console.log(state)
-    return { ... state, connectionId: action.connectionId }
+    return state.set('connectionId', action.connectionId)
   },
-  [CONNECT]: (state, action) => {
-    console.log('connect', action)
-    let c = state.connection.connect(action.peerId, {
+  [ONCONNECT]: (state, action) => {
+    console.log('ONCONNECT')
+
+    let c = state.get('connection').connect(action.peerId, {
         label: 'control',
         serialization: 'none',
         metadata: {message: 'hi i want to music with you!'}
-      });
-    let newPeers = (state.peers[action.peerId] = c)
-    return { ... state, peers: newPeers}
+      })
+
+    c.on('data', (data) => console.log(data))
+
+    return  state.set('peers', state.get('peers').push(action.peerId))
+  },
+  [CONNECT]: (state, action) => {
+    console.log('CONNECT', action)
+
+    let c = action.connection
+
+    c.on('data', (data) => console.log(data))
+
+    return state
   }
 }
 
@@ -108,7 +154,7 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 
 
-const initialState = { connectionId: "Not connected", connection: null, peers: {} }
+const initialState = Immutable.Map({ connectionId: '', connection: null, peers: Immutable.List() })
 export default function conductorReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
 

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { connectRTC, initRTC, sendRTC, emitRTC } from '../modules/conductor'
+import { onConnectRTC, connectRTC, initRTC, sendRTC, emitRTC } from '../../../modules/conductor'
 
 /*  This is a container component. Notice it does not contain any JSX,
     nor does it import React. This component is **only** responsible for
@@ -13,6 +13,7 @@ import Hello from 'components/Hello'
     implementing our wrapper around increment; the component doesn't care   */
 
 const mapActionCreators = {
+  onConnectRTC: onConnectRTC,
   connectRTC: connectRTC,
   initRTC: initRTC,
   sendRTC: sendRTC,

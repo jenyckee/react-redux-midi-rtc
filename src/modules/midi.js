@@ -71,12 +71,17 @@ const ACTION_HANDLERS = {
     return state.set('midiAccess', action.access)
   },
   [MIDI_MESSAGE]: (state, action) => {
+    let noteOn = 144,
+        noteOff = 128,
+        control = 176
+
     switch (action.message[0]) {
-      case 144:
+      case noteOn:
+        console.log(action.message)
         return state.set(action.message[1], action.message[2])
-      case 128:
+      case noteOff:
         return state.delete(action.message[1])
-      case 176:
+      case control:
         return state.set(action.message[1], action.message[2])
       default:
         return state

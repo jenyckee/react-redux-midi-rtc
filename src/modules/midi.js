@@ -1,5 +1,6 @@
 /* @flow */
 import { Map } from 'immutable'
+import { DATA } from './conductor.js'
 
 // ------------------------------------
 // Constants
@@ -109,6 +110,13 @@ const ACTION_HANDLERS = {
     var output = midiAccess.outputs.get(portID)
     output.send(action.message)
     return state.set(action.message[1], action.message[2])
+  },
+  [DATA]: (state, action) => {
+    let midiAccess = state.get('midiAccess')
+    var portID = '29211623'
+    var output = midiAccess.outputs.get(portID)
+    output.send(action.data)
+    return state.set(action.data[1], 120)
   }
 }
 

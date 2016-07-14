@@ -1,4 +1,3 @@
-
 import Peer from 'peerjs'
 import Immutable from 'immutable'
 
@@ -24,9 +23,11 @@ export function onConnectRTC (c) {
 }
 
 export function connectRTC (c) {
-  return {
-    type: CONNECT,
-    connection: c
+  return (dispatch, getState) => {
+    return new Promise((resolve) => {
+      c.on('data', (data) => dispatch(dataRTC(data)))
+      resolve()
+    })
   }
 }
 
@@ -104,7 +105,7 @@ function eachActiveConnection(state, fn) {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [DATA]: (state, action) => {
-    console.log(action.data)
+    console.log(action)
     return state
   },
   [INIT]: (state, action) => {
@@ -126,11 +127,9 @@ const ACTION_HANDLERS = {
     return state.set('connectionId', action.connectionId)
   },
   [ONCONNECT]: (state, action) => {
-    console.log('ONCONNECT')
-
     let c = state.get('connection').connect(action.peerId, {
         label: 'control',
-        serialization: 'none',
+        serialization: 'json',
         metadata: {message: 'hi i want to music with you!'}
       })
 
@@ -139,11 +138,8 @@ const ACTION_HANDLERS = {
     return  state.set('peers', state.get('peers').push(action.peerId))
   },
   [CONNECT]: (state, action) => {
-    console.log('CONNECT', action)
-
-    let c = action.connection
-
-    c.on('data', (data) => console.log(data))
+    // let c = action.connection
+    // c.on('data', (data) => console.log(data))
 
     return state
   }

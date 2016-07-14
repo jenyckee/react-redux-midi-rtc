@@ -1,0 +1,11 @@
+.note {
+  width: 100px;
+  height: 100px;
+  background-color: grey;
+  margin: 5px;
+  border-radius: 100%;
+}
+
+.note.played {
+  background-color: tomato;
+}

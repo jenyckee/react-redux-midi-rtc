@@ -1,10 +1,12 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { noteDown, noteUp } from '../../modules/midi'
+import classes from './Note.scss'
+import cx from 'classnames'
 
 export class Note extends React.Component<void, Props, void> {
   classList () {
-    return classnames({
+    return cx({
       note: true,
       played: this.props.midiState.get(this.props.note.midi())
     })
@@ -23,8 +25,7 @@ export class Note extends React.Component<void, Props, void> {
 }
 
 const mapStateToProps = (state) => ({
-  noteDown: state.noteDown,
-  noteUp: state.noteUp
+  midiState: state.midiState
 })
 export default connect(mapStateToProps, {
   noteDown: noteDown,

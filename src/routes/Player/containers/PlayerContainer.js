@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import { onConnectRTC, connectRTC, initRTC, sendRTC, emitRTC } from '../../../modules/conductor'
 
+
 /*  This is a container component. Notice it does not contain any JSX,
     nor does it import React. This component is **only** responsible for
     wiring in the actions and state necessary to render a presentational
@@ -22,7 +23,8 @@ const mapActionCreators = {
 
 const mapStateToProps = (state) => {
   return {
-    connectionId: state.conductor.connectionId
+    connectionId: state.conductor.connectionId,
+    midiState: state.midi
   }
 }
 

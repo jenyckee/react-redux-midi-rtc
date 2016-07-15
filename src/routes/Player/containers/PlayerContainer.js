@@ -18,13 +18,13 @@ const mapActionCreators = {
   connectRTC: connectRTC,
   initRTC: initRTC,
   sendRTC: sendRTC,
-  emitRTC: emitRTC
+  emitRTC: emitRTC,
 }
 
 const mapStateToProps = (state) => {
   return {
     connectionId: state.conductor.connectionId,
-    midiState: state.midi
+    midi: state.midi
   }
 }
 

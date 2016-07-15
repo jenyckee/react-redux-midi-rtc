@@ -25,7 +25,7 @@ export class Note extends React.Component<void, Props, void> {
 }
 
 const mapStateToProps = (state) => ({
-  midiState: state.midiState
+  midi: state.midi
 })
 export default connect(mapStateToProps, {
   noteDown: noteDown,

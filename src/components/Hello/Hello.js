@@ -19,10 +19,11 @@ class Hello extends React.Component {
   }
 
   render () {
+    console.log(this.props.midi.get(''))
     return (
       <div>
         <h3>Connect to the conductor!</h3>
-        <Note note={teoria.note('c4')} midiState={this.props.midiState} />
+        <Note note={teoria.note('c4')} midi={this.props.midi} />
         <button onClick={this.makeConnection.bind(this)}>Connect</button>
         <button onClick={this.testConnection.bind(this)}>Send</button>
       </div>
@@ -35,7 +36,7 @@ Hello.propTypes = {
   initRTC: React.PropTypes.func.isRequired,
   sendRTC: React.PropTypes.func.isRequired,
   emitRTC: React.PropTypes.func.isRequired,
-  midiState: React.PropTypes.func.isRequired,
+  midi: React.PropTypes.object.isRequired,
 }
 
 export default Hello

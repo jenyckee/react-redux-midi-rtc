@@ -4,14 +4,14 @@ import Immutable from 'immutable'
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const CONNECT = 'CONNECT'
-export const ONCONNECT = 'ONCONNECT'
-export const SEND = 'SEND'
-export const OPEN = 'OPEN'
-export const EMIT = 'EMIT'
-export const INIT = 'INIT'
-export const DATA = 'DATA'
-
+export const CONNECT    = 'CONNECT'
+export const ONCONNECT  = 'ONCONNECT'
+export const SEND       = 'SEND'
+export const OPEN       = 'OPEN'
+export const EMIT       = 'EMIT'
+export const INIT       = 'INIT'
+export const DATA       = 'DATA'
+export const ERROR      = 'ERROR'
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -46,13 +46,20 @@ export function initRTC (apiKey, debugLevel) {
         key: apiKey,
         debug: debugLevel
       }).on('connection', (c) => dispatch(connectRTC(c)))
-        .on('error', error)
+        .on('error', dispatch(errorRTC(error)))
         .on('open', (id) => dispatch(openRTC(id)))
 
       dispatch({ type: 'INIT', connection: c })
 
       resolve()
     })
+  }
+}
+
+export function errorRTC (error) {
+  return {
+    type: ERROR,
+    data: error
   }
 }
 
@@ -88,7 +95,7 @@ export const actions = {
   emitRTC
 }
 
-function eachActiveConnection(state, fn) {
+function eachActiveConnection (state, fn) {
   var actives = state.get('peers')
   var checkedIds = {}
   actives.forEach(function(peerId, index) {
@@ -128,19 +135,14 @@ const ACTION_HANDLERS = {
   },
   [ONCONNECT]: (state, action) => {
     let c = state.get('connection').connect(action.peerId, {
-        label: 'control',
+        label: 'midi',
         serialization: 'json',
         metadata: {message: 'hi i want to music with you!'}
       })
 
-    c.on('data', (data) => console.log(data))
-
     return  state.set('peers', state.get('peers').push(action.peerId))
   },
   [CONNECT]: (state, action) => {
-    // let c = action.connection
-    // c.on('data', (data) => console.log(data))
-
     return state
   }
 }

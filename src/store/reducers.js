@@ -1,8 +1,9 @@
-import { combineReducers } from 'redux'
+// import { combineReducers } from 'redux'
 // import { routerReducer as router } from 'react-router-redux'
 import midi from '../modules/midi'
 import conductor from '../modules/conductor'
 import router from '../modules/RouterReducer'
+import { combineReducers } from 'redux-immutable'
 
 export const makeRootReducer = (asyncReducers) => {
   return combineReducers({

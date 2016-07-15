@@ -2,6 +2,7 @@ import { applyMiddleware, compose, createStore } from 'redux'
 import { routerMiddleware } from 'react-router-redux'
 import thunk from 'redux-thunk'
 import makeRootReducer from './reducers'
+import Immutable from 'immutable'
 
 export default (initialState = {}, history) => {
   // ======================================================
@@ -25,7 +26,7 @@ export default (initialState = {}, history) => {
   // ======================================================
   const store = createStore(
     makeRootReducer(),
-    initialState,
+    Immutable.fromJS(initialState),
     compose(
       applyMiddleware(...middleware),
       ...enhancers

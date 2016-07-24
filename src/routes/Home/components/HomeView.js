@@ -14,14 +14,14 @@ export class HomeView extends React.Component {
 
   render() {
     return (
-        <div>
-          <h4>Welcome!</h4>
-          <Link to={'/player/'+this.props.connectionId} target="_blank">
-            Player
-          </Link>
-          <h3>I am {this.props.connectionId}!</h3>
-        </div>
-      )
+      <div>
+        <h4>Welcome!</h4>
+        <Link to={'/player/'+this.props.connectionId} target="_blank">
+          Player
+        </Link>
+        <h3>I am {this.props.connectionId}!</h3>
+      </div>
+    )
   }
 }
 
@@ -32,7 +32,8 @@ const mapActionCreators = {
 
 const mapStateToProps = (state) => {
   return {
-    connectionId: state.conductor.get('connectionId')
+    connectionId: state.conductor.get('connectionId'),
+    midi: state.midi
   }
 }
 

@@ -1,6 +1,4 @@
 import React from 'react'
-// import { connect } from 'react-redux'
-// import { initRTC } from '../../modules/conductor'
 import Header from '../../components/Header'
 import classes from './CoreLayout.scss'
 import '../../styles/core.scss'

@@ -7,10 +7,6 @@ export const Header = (props) => (
     <IndexLink to='/' activeClassName={classes.activeRoute}>
       Home
     </IndexLink>
-    {' · '}
-    <Link to='/counter' activeClassName={classes.activeRoute}>
-      Counter
-    </Link>
   </div>
 )
 

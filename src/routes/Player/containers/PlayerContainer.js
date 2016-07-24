@@ -7,7 +7,7 @@ import { onConnectRTC, connectRTC, initRTC, sendRTC, emitRTC } from '../../../mo
     wiring in the actions and state necessary to render a presentational
     component - in this case, the counter:   */
 
-import Hello from 'components/Hello'
+import Player from '../../../components/Player'
 
 /*  Object of action creators (can also be function that returns object).
     Keys will be passed as props to presentational components. Here we are
@@ -42,4 +42,4 @@ const mapStateToProps = (state) => {
     Selectors are composable. They can be used as input to other selectors.
     https://github.com/reactjs/reselect    */
 
-export default connect(mapStateToProps, mapActionCreators)(Hello)
+export default connect(mapStateToProps, mapActionCreators)(Player)

@@ -1,9 +1,7 @@
 import React from 'react'
-import classes from './Hello.scss'
 import Note from '../Note'
 import teoria from 'teoria'
-
-class Hello extends React.Component {
+class Player extends React.Component {
 
   componentDidMount() {
     this.props.initRTC('bnon5rifq5dygb9', 3)
@@ -19,7 +17,7 @@ class Hello extends React.Component {
   }
 
   render () {
-    console.log(this.props.midi.get(''))
+    console.log(this.props.midi)
     return (
       <div>
         <h3>Connect to the conductor!</h3>
@@ -31,12 +29,4 @@ class Hello extends React.Component {
   }
 }
 
-Hello.propTypes = {
-  connectRTC: React.PropTypes.func.isRequired,
-  initRTC: React.PropTypes.func.isRequired,
-  sendRTC: React.PropTypes.func.isRequired,
-  emitRTC: React.PropTypes.func.isRequired,
-  midi: React.PropTypes.object.isRequired,
-}
-
-export default Hello
+export default Player

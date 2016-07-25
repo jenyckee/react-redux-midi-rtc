@@ -71,22 +71,24 @@ export function control (channel, value) {
 // Action Handlers
 // ------------------------------------
 
+const MIDI_MESSAGES = {
+  noteON  : 144,
+  noteOFF : 128,
+  control : 176
+}
+
 const ACTION_HANDLERS = {
   [MIDI_OK]: (state: object, action: {access: Object}): Object => {
     return state.set('midiAccess', action.access)
   },
   [MIDI_MESSAGE]: (state, action) => {
-    let noteOn = 144,
-        noteOff = 128,
-        control = 176
-
     switch (action.message[0]) {
-      case noteOn:
+      case MIDI_MESSAGES.noteON:
         console.log(action.message)
         return state.set(action.message[1], action.message[2])
-      case noteOff:
+      case MIDI_MESSAGES.noteOFF:
         return state.delete(action.message[1])
-      case control:
+      case MIDI_MESSAGES.control:
         return state.set(action.message[1], action.message[2])
       default:
         return state

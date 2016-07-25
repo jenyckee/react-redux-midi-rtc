@@ -4,9 +4,6 @@ import classes from './Header.scss'
 
 export const Header = (props) => (
   <div>
-    <IndexLink to='/' activeClassName={classes.activeRoute}>
-      Home
-    </IndexLink>
   </div>
 )
 

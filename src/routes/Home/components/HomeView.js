@@ -15,11 +15,10 @@ export class HomeView extends React.Component {
   render() {
     return (
       <div>
-        <h4>Welcome!</h4>
-        <Link to={'/player/'+this.props.connectionId} target="_blank">
-          Player
-        </Link>
         <h3>I am {this.props.connectionId}!</h3>
+        <Link to={'/player/'+this.props.connectionId} target="_blank">
+          Open new Player
+        </Link>
       </div>
     )
   }

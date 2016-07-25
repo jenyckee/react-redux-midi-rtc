@@ -47,11 +47,12 @@ export function initRTC (apiKey, debugLevel) {
         debug: debugLevel
       }).on('connection', (c) => dispatch(connectRTC(c)))
         .on('error', dispatch(errorRTC(error)))
-        .on('open', (id) => dispatch(openRTC(id)))
+        .on('open', (id) => {
+          dispatch(openRTC(id))
+          resolve()
+        })
 
       dispatch({ type: 'INIT', connection: c })
-
-      resolve()
     })
   }
 }
@@ -100,11 +101,11 @@ function eachActiveConnection (state, fn) {
   var checkedIds = {}
   actives.forEach(function(peerId, index) {
     if (!checkedIds[peerId]) {
-      var conns = state.get('connection').connections[peerId];
+      var conns = state.get('connection').connections[peerId]
       conns.forEach(fn)
     }
-    checkedIds[peerId] = 1;
-  });
+    checkedIds[peerId] = 1
+  })
 }
 
 // ------------------------------------
@@ -112,7 +113,6 @@ function eachActiveConnection (state, fn) {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [DATA]: (state, action) => {
-    console.log(action)
     return state
   },
   [INIT]: (state, action) => {

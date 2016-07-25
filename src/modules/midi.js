@@ -95,20 +95,20 @@ const ACTION_HANDLERS = {
     }
   },
   [MIDI_OUT_NOTE_DOWN]: (state, action) => {
-    let midiAccess = state.get('midiAccess')
-    var portID = '-2114470760'
-    var noteDownMessage = [0x90, action.message.midi, 0x7f]    // note on, middle C, full velocity
-    var output = midiAccess.outputs.get(portID)
-    output.send(noteDownMessage)
-    return state.set(action.message.midi, 120)
+    // let midiAccess = state.get('midiAccess')
+    // var portID = '-2114470760'
+    // var noteDownMessage = [0x90, action.message.midi, 0x7f]    // note on, middle C, full velocity
+    // var output = midiAccess.outputs.get(portID)
+    // output.send(noteDownMessage)
+    return state.set(action.message, 120)
   },
   [MIDI_OUT_NOTE_UP]: (state, action) => {
-    let midiAccess = state.get('midiAccess')
-    var portID = '-2114470760'
-    var noteUpMessage = [0x80, action.message.midi, 0x40]   // note on, middle C, full velocity
-    var output = midiAccess.outputs.get(portID)
-    output.send(noteUpMessage)
-    return state.delete(action.message.midi)
+    // let midiAccess = state.get('midiAccess')
+    // var portID = '-2114470760'
+    // var noteUpMessage = [0x80, action.message.midi, 0x40]   // note on, middle C, full velocity
+    // var output = midiAccess.outputs.get(portID)
+    // output.send(noteUpMessage)
+    return state.delete(action.message)
   },
   [MIDI_CONTROL]: (state, action) => {
     let midiAccess = state.get('midiAccess')

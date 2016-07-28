@@ -1,6 +1,6 @@
 /* @flow */
 import { Map } from 'immutable'
-import { DATA } from './conductor.js'
+import { DATA, emitRTC } from './conductor.js'
 
 // ------------------------------------
 // Constants
@@ -37,9 +37,16 @@ export const asyncRequestMIDI = (): Function => {
 }
 
 export function midiMessage (event) {
-  return {
-    type: MIDI_MESSAGE,
-    message: event.data
+  console.log('midi message :', event)
+  return (dispatch, getState) => {
+    return new Promise((resolve) => {
+      dispatch(emitRTC(event.data))
+      dispatch({
+        type: MIDI_MESSAGE,
+        message: event.data
+      })
+      resolve()
+    })
   }
 }
 
@@ -84,9 +91,9 @@ const ACTION_HANDLERS = {
   [MIDI_MESSAGE]: (state, action) => {
     switch (action.message[0]) {
       case MIDI_MESSAGES.noteON:
-        console.log(action.message)
         return state.set(action.message[1], action.message[2])
       case MIDI_MESSAGES.noteOFF:
+        console.log('noteOFF')
         return state.delete(action.message[1])
       case MIDI_MESSAGES.control:
         return state.set(action.message[1], action.message[2])
@@ -111,17 +118,19 @@ const ACTION_HANDLERS = {
     return state.delete(action.message)
   },
   [MIDI_CONTROL]: (state, action) => {
-    let midiAccess = state.get('midiAccess')
-    var portID = '-2114470760'
-    var output = midiAccess.outputs.get(portID)
-    output.send(action.message)
+    // let midiAccess = state.get('midiAccess')
+    // var portID = '-2114470760'
+    // var output = midiAccess.outputs.get(portID)
+    // output.send(action.message)
     return state.set(action.message[1], action.message[2])
   },
   [DATA]: (state, action) => {
     let midiAccess = state.get('midiAccess')
     var portID = '-2114470760'
-    var output = midiAccess.outputs.get(portID)
-    output.send(action.data)
+    if (midiAccess) {
+      var output = midiAccess.outputs.get(portID)
+      output.send(action.data)
+    }
     return state.set(action.data[1], 120)
   }
 }

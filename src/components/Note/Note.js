@@ -6,8 +6,6 @@ import classes from './Note.scss'
 import cx from 'classnames'
 
 export class Note extends React.Component<void, Props, void> {
-
-
   classList () {
     return cx({
       [classes.note]: true,
@@ -15,15 +13,14 @@ export class Note extends React.Component<void, Props, void> {
     })
   }
   noteDown () {
-    this.props.emitRTC([0x90, 60, 0x7f])
-    this.props.noteDown(60)
+    this.props.emitRTC([0x90, this.props.note.midi(), 0x7f])
+    this.props.noteDown(this.props.note.midi())
   }
   noteUp () {
-    this.props.emitRTC([0x80, 60, 0x7f])
-    this.props.noteUp(60)
+    this.props.emitRTC([0x80, this.props.note.midi(), 0x7f])
+    this.props.noteUp(this.props.note.midi())
   }
   render () {
-    console.log(classes)
     return (
       <div className={this.classList()} onMouseDown={this.noteDown.bind(this)} onMouseUp={this.noteUp.bind(this)}></div>
     )

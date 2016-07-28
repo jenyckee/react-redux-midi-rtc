@@ -12,10 +12,10 @@ class Player extends React.Component {
   }
 
   render () {
-    console.log(this.props.midi)
     return (
       <div>
         <Note note={teoria.note('c4')} midi={this.props.midi} />
+        <Note note={teoria.note('g4')} midi={this.props.midi} />
       </div>
     )
   }

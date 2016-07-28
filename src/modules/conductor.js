@@ -26,6 +26,10 @@ export function connectRTC (c) {
   return (dispatch, getState) => {
     return new Promise((resolve) => {
       c.on('data', (data) => dispatch(dataRTC(data)))
+      dispatch({
+        type: CONNECT,
+        peerId: c.peer
+      })
       resolve()
     })
   }
@@ -79,6 +83,7 @@ export function sendRTC (message, id) {
 }
 
 export function emitRTC (message) {
+  console.log('emitting :', message)
   return {
     type: EMIT,
     message: message
@@ -99,6 +104,7 @@ export const actions = {
 function eachActiveConnection (state, fn) {
   var actives = state.get('peers')
   var checkedIds = {}
+
   actives.forEach(function(peerId, index) {
     if (!checkedIds[peerId]) {
       var conns = state.get('connection').connections[peerId]
@@ -113,6 +119,7 @@ function eachActiveConnection (state, fn) {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [DATA]: (state, action) => {
+    console.log('data',action)
     return state
   },
   [INIT]: (state, action) => {
@@ -134,16 +141,32 @@ const ACTION_HANDLERS = {
     return state.set('connectionId', action.connectionId)
   },
   [ONCONNECT]: (state, action) => {
-    let c = state.get('connection').connect(action.peerId, {
-        label: 'midi',
-        serialization: 'json',
-        metadata: {message: 'hi i want to music with you!'}
-      })
+    if (!state.get('peers').get(action.peerId)) {
 
-    return  state.set('peers', state.get('peers').push(action.peerId))
+      let c = state.get('connection').connect(action.peerId, {
+          label: 'midi',
+          serialization: 'json',
+          metadata: {message: 'midi_control'}
+        })
+
+      return state.set('peers', state.get('peers').push(action.peerId))
+    } else
+    return state
   },
   [CONNECT]: (state, action) => {
+
+    if (!state.get('peers').find(v => v == action.peerId)) {
+
+      let c = state.get('connection').connect(action.peerId, {
+          label: 'midi',
+          serialization: 'json',
+          metadata: {message: 'midi_control'}
+        })
+
+      return state.set('peers', state.get('peers').push(action.peerId))
+    } else
     return state
+    // return  state.set('peers', state.get('peers').push(action.peerId))
   }
 }
 

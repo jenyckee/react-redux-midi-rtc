@@ -5,7 +5,7 @@ import Immutable from 'immutable'
 // Constants
 // ------------------------------------
 export const CONNECT    = 'CONNECT'
-export const ONCONNECT  = 'ONCONNECT'
+export const CONNECTED  = 'CONNECTED'
 export const SEND       = 'SEND'
 export const OPEN       = 'OPEN'
 export const EMIT       = 'EMIT'
@@ -15,19 +15,19 @@ export const ERROR      = 'ERROR'
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function onConnectRTC (c) {
+export function connectRTC (c) {
   return {
-    type: ONCONNECT,
+    type: CONNECT,
     peerId: c
   }
 }
 
-export function connectRTC (c) {
+export function connectedRTC (c) {
   return (dispatch, getState) => {
     return new Promise((resolve) => {
       c.on('data', (data) => dispatch(dataRTC(data)))
       dispatch({
-        type: CONNECT,
+        type: CONNECTED,
         peerId: c.peer
       })
       resolve()
@@ -49,13 +49,12 @@ export function initRTC (apiKey, debugLevel) {
       let c = new Peer({
         key: apiKey,
         debug: debugLevel
-      }).on('connection', (c) => dispatch(connectRTC(c)))
+      }).on('connection', (c) => dispatch(connectedRTC(c)))
         .on('error', dispatch(errorRTC(error)))
         .on('open', (id) => {
           dispatch(openRTC(id))
-          resolve()
+          resolve(c)
         })
-
       dispatch({ type: 'INIT', connection: c })
     })
   }
@@ -140,33 +139,27 @@ const ACTION_HANDLERS = {
   [OPEN]: (state, action) => {
     return state.set('connectionId', action.connectionId)
   },
-  [ONCONNECT]: (state, action) => {
+  [CONNECT]: (state, action) => {
     if (!state.get('peers').get(action.peerId)) {
-
       let c = state.get('connection').connect(action.peerId, {
           label: 'midi',
           serialization: 'json',
           metadata: {message: 'midi_control'}
         })
-
       return state.set('peers', state.get('peers').push(action.peerId))
     } else
     return state
   },
-  [CONNECT]: (state, action) => {
-
+  [CONNECTED]: (state, action) => {
     if (!state.get('peers').find(v => v == action.peerId)) {
-
       let c = state.get('connection').connect(action.peerId, {
           label: 'midi',
           serialization: 'json',
           metadata: {message: 'midi_control'}
         })
-
       return state.set('peers', state.get('peers').push(action.peerId))
     } else
     return state
-    // return  state.set('peers', state.get('peers').push(action.peerId))
   }
 }
 

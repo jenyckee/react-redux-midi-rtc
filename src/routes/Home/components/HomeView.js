@@ -1,7 +1,7 @@
 import React from 'react'
 import classes from './HomeView.scss'
 import { connect } from 'react-redux'
-import { initRTC } from '../../../modules/conductor'
+import { initRTC } from '../../../modules/dataChannel'
 import { IndexLink, Link } from 'react-router'
 import { asyncRequestMIDI } from '../../../modules/midi'
 
@@ -31,7 +31,7 @@ const mapActionCreators = {
 
 const mapStateToProps = (state) => {
   return {
-    connectionId: state.conductor.get('connectionId'),
+    connectionId: state.dataChannel.get('connectionId'),
     midi: state.midi
   }
 }

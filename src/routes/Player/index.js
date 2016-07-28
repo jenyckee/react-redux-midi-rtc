@@ -10,15 +10,15 @@ export default (store) => ({
       /*  Webpack - use require callback to define
           dependencies for bundling   */
       const Player = require('./containers/PlayerContainer').default
-      const reducer = require('../../modules/conductor').default
+      const reducer = require('../../modules/dataChannel').default
 
-      /*  Add the reducer to the store on key 'conductor'  */
+      /*  Add the reducer to the store on key 'player'  */
       injectReducer(store, { key: 'player', reducer })
 
       /*  Return getComponent   */
       cb(null, Player)
 
     /* Webpack named bundle   */
-    }, 'conductor')
+    }, 'player')
   }
 })

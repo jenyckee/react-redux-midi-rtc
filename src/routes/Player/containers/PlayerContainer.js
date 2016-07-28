@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { onConnectRTC, connectRTC, initRTC, sendRTC, emitRTC } from '../../../modules/conductor'
+import { onConnectRTC, connectRTC, initRTC, sendRTC, emitRTC } from '../../../modules/dataChannel'
 
 
 /*  This is a container component. Notice it does not contain any JSX,
@@ -17,13 +17,11 @@ const mapActionCreators = {
   onConnectRTC: onConnectRTC,
   connectRTC: connectRTC,
   initRTC: initRTC,
-  sendRTC: sendRTC,
-  emitRTC: emitRTC,
 }
 
 const mapStateToProps = (state) => {
   return {
-    connectionId: state.conductor.connectionId,
+    connectionId: state.dataChannel.connectionId,
     midi: state.midi
   }
 }

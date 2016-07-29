@@ -13,7 +13,7 @@ export class Note extends React.Component<void, Props, void> {
     })
   }
   noteDown () {
-    this.props.emitRTC([0x90, this.props.note.midi(), 0x7f], this.props.connectionId)
+    this.props.sendRTC([0x90, this.props.note.midi(), 0x7f], this.props.connectionId)
     this.props.noteDown(this.props.note.midi())
   }
   noteUp () {

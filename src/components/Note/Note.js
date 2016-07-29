@@ -9,16 +9,16 @@ export class Note extends React.Component<void, Props, void> {
   classList () {
     return cx({
       [classes.note]: true,
-      [classes.played]: this.props.midi.get(this.props.note.midi())
+      [classes.played]: this.props.midi.get(this.props.note)
     })
   }
   noteDown () {
-    this.props.sendRTC([0x90, this.props.note.midi(), 0x7f], this.props.connectionId)
-    this.props.noteDown(this.props.note.midi())
+    this.props.sendRTC([0x90, this.props.note, 0x7f], this.props.connectionId)
+    this.props.noteDown(this.props.note)
   }
   noteUp () {
-    this.props.emitRTC([0x80, this.props.note.midi(), 0x7f], this.props.connectionId)
-    this.props.noteUp(this.props.note.midi())
+    this.props.emitRTC([0x80, this.props.note, 0x7f], this.props.connectionId)
+    this.props.noteUp(this.props.note)
   }
   render () {
     return (

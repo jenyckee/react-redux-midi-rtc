@@ -1,12 +1,13 @@
 .note {
-  width: 100px;
-  height: 100px;
-  background-color: grey;
+  width: 10vw;
+  height: 10vw;
+  background-color: #E6E6E6;
   margin: 5px;
   border-radius: 100%;
+  border: solid 5px white;
   display: inline-block;
 }
 
 .note.played {
-  background-color: tomato;
+  background-color: rgba(255, 0, 0, 0.5);;
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import Note from '../Note'
+import Knob from '../Knob'
 import teoria from 'teoria'
 
 class Player extends React.Component {
@@ -27,6 +28,7 @@ class Player extends React.Component {
         <div>{octavesc3}</div>
         <div>{octavesc2}</div>
         <div>{octavesc1}</div>
+        <Knob />
       </div>
     )
   }

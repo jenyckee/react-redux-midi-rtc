@@ -112,6 +112,7 @@
     "normalize.css": "^4.1.1",
     "peerjs": "^0.3.14",
     "postcss-loader": "^0.9.0",
+    "rc-slider": "^3.8.2",
     "react": "^15.0.0",
     "react-dom": "^15.0.0",
     "react-redux": "^4.0.0",

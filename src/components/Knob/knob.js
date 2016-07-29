@@ -1,24 +1,26 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import classnames from 'classnames'
-import { control } from '../redux/modules/midi'
+import { control } from '../../modules/midi'
+import { sendRTC, emitRTC } from '../../modules/dataChannel'
+import cx from 'classnames'
 import Slider from 'rc-slider'
 
 import 'rc-slider/assets/index.css'
 
 export class Knob extends React.Component<void, Props, void> {
   classList () {
-    return classnames({
+    return cx({
       knob: true
     })
   }
 
   handleSliderChange = (value) => {
     this.props.control(37, value)
+    this.props.sendRTC([176, 1, value], this.props.connectionId)
   }
 
   value = () => {
-    return this.props.midiState.get(37) || 0
+    return this.props.midi.get(37) || 0
   }
 
   render () {
@@ -32,9 +34,14 @@ export class Knob extends React.Component<void, Props, void> {
   }
 }
 
-const mapStateToProps = (state) => ({
-  control: state.control
-})
+const mapStateToProps = (state) => {
+  return ({
+    midi: state.midi,
+    connectionId: state.dataChannel.get('connectionId')
+  })
+}
 export default connect(mapStateToProps, {
-  control: control
+  sendRTC: sendRTC,
+  emitRTC: emitRTC,
+  control: control,
 })(Knob)

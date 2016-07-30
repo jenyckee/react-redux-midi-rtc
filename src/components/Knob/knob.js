@@ -24,7 +24,7 @@ export class Knob extends React.Component<void, Props, void> {
   }
 
   render () {
-    const wrapperStyle = {width: 400, margin: 50}
+    const wrapperStyle = { margin: 50 }
 
     return (
       <div className={this.classList()} style={wrapperStyle}>

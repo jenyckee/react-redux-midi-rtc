@@ -14,14 +14,15 @@ class Player extends React.Component {
 
   scale(base, scale) {
     let baseNote = teoria.note(base)
-    return baseNote.scale(scale).simple().map(n => teoria.note(n).midi())
+    return baseNote.scale(scale).notes().map(n => n.midi())
   }
 
   render () {
-    let scale = this.scale('D#', 'minor'),
+    let scale = this.scale('C', 'major'),
+        ocatve = scale.push(scale[0]+12),
         octavesc1 = scale.map((midi) => <Note note={midi} key={midi}/>),
-        octavesc2 = scale.map((midi) => <Note note={midi+12} key={midi}/>),
-        octavesc3 = scale.map((midi) => <Note note={midi+24} key={midi}/>)
+        octavesc2 = scale.map((midi) => <Note note={midi+5} key={midi}/>),
+        octavesc3 = scale.map((midi) => <Note note={midi+9} key={midi}/>)
 
     return (
       <div>

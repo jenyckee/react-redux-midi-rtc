@@ -29,7 +29,7 @@ class Player extends React.Component {
         <div>{octavesc3}</div>
         <div>{octavesc2}</div>
         <div>{octavesc1}</div>
-        <Knob />
+        <Knob channel={1}/>
       </div>
     )
   }

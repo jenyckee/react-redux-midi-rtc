@@ -15,12 +15,12 @@ export class Knob extends React.Component<void, Props, void> {
   }
 
   handleSliderChange = (value) => {
-    this.props.control(37, value)
-    this.props.sendRTC([176, 1, value], this.props.connectionId)
+    this.props.control(this.props.channel, value)
+    this.props.sendRTC([176, this.props.channel, value], this.props.connectionId)
   }
 
   value = () => {
-    return this.props.midi.get(37) || 0
+    return this.props.midi.get(this.props.channel) || 0
   }
 
   render () {

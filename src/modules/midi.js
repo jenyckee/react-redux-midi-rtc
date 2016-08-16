@@ -101,42 +101,22 @@ const ACTION_HANDLERS = {
     }
   },
   [MIDI_OUT_NOTE_DOWN]: (state, action) => {
-    // let midiAccess = state.get('midiAccess')
-    // var portID = '-2114470760'
-    // var noteDownMessage = [0x90, action.message.midi, 0x7f]    // note on, middle C, full velocity
-    // var output = midiAccess.outputs.get(portID)
-    // output.send(noteDownMessage)
     return state.set(action.message, 120)
   },
   [MIDI_OUT_NOTE_UP]: (state, action) => {
-    // let midiAccess = state.get('midiAccess')
-    // var portID = '-2114470760'
-    // var noteUpMessage = [0x80, action.message.midi, 0x40]   // note on, middle C, full velocity
-    // var output = midiAccess.outputs.get(portID)
-    // output.send(noteUpMessage)
     return state.delete(action.message)
   },
   [MIDI_CONTROL]: (state, action) => {
-    // let midiAccess = state.get('midiAccess')
-    // var portID = '-2114470760'
-    // var output = midiAccess.outputs.get(portID)
-    // output.send(action.message)
     return state.set(action.message[1], action.message[2])
   },
   [DATA]: (state, action) => {
-    console.log(action)
-    let midiAccess = state.get('midiAccess')
-    var portID = state.get('outPortId')
-    if (midiAccess) {
-      var output = midiAccess.outputs.get(portID)
-      output.send(action.data)
-    }
     switch (action.data[0]) {
       case MIDI_MESSAGES.noteON:
         return state.set(action.data[1], action.data[2])
       case MIDI_MESSAGES.noteOFF:
         return state.delete(action.data[1])
       case MIDI_MESSAGES.control:
+        console.log(action)
         return state.set(action.data[1], action.data[2])
       default:
         return state

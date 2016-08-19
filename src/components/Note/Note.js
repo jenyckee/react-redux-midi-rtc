@@ -13,12 +13,12 @@ export class Note extends React.Component<void, Props, void> {
     })
   }
   noteDown () {
-    this.props.sendRTC([0x90, this.props.note, 0x7f], this.props.connectionId)
-    this.props.noteDown(this.props.note)
+    this.props.sendRTC([0x90, this.props.note, 0x7f])
+    this.props.noteDown(this.props.note, 0x7f)
   }
   noteUp () {
-    this.props.emitRTC([0x80, this.props.note, 0x7f], this.props.connectionId)
-    this.props.noteUp(this.props.note)
+    this.props.emitRTC([0x80, this.props.note, 0x7f])
+    this.props.noteUp(this.props.note, 0x7f)
   }
   render () {
     return (

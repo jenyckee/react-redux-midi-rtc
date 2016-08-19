@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import classnames from 'classnames'
-import { control, noteDown, noteUp } from '../redux/modules/midi'
+// import classnames from 'classnames'
+import { control, noteDown, noteUp } from '../../modules/midi'
 
 import PIXI from "pixi.js"
 
@@ -45,10 +45,10 @@ export class Grid extends React.Component<void, Props, void> {
 
   animate() {
     this.graphics.clear()
-    var color = this.props.midiState.get(60) ? 0xFF0000 : 0xFFFFFF
+    var color = this.props.midi.get(60) ? 0xFF0000 : 0xFFFFFF
     this.graphics.lineStyle(0)
     this.graphics.beginFill(color, 0.5)
-    this.graphics.drawCircle(200,200, this.props.midiState.get(37) ? this.props.midiState.get(37) /127*50 : 20)
+    this.graphics.drawCircle(200,200, this.props.midi.get(37) ? this.props.midi.get(37) /127*50 : 20)
     this.graphics.interactive = true
     this.graphics.endFill()
 
@@ -65,7 +65,7 @@ export class Grid extends React.Component<void, Props, void> {
 }
 
 const mapStateToProps = (state) => ({
-  control: state.control
+  midi: state.midi
 })
 export default connect(mapStateToProps, {
   control: control,

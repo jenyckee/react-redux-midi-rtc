@@ -2,21 +2,36 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 // import classnames from 'classnames'
 import { control, noteDown, noteUp } from '../../modules/midi'
+import { sendRTC } from '../../modules/dataChannel'
+
 
 import PIXI from "pixi.js"
 
 export class Grid extends React.Component<void, Props, void> {
 
   onDown(event) {
-    this.props.noteDown({midi: 60})
+    this.props.noteDown(60)
+    this.props.sendRTC([0x90, 60, 0x7f])
   }
 
   onUp (event) {
-    this.props.noteUp({midi: 60})
+    this.props.noteUp(60)
+    this.props.sendRTC([0x80, 60, 0x7f])
   }
 
   componentDidMount() {
-    this.renderer = PIXI.autoDetectRenderer(800, 600, {antialias: true})
+    var width = 800,
+        height = 600
+
+    this.canvas = window.document.createElement("canvas")
+    this.canvas.style.width = width + "px"
+    this.canvas.style.height = height + "px"
+
+    this.renderer = new PIXI.CanvasRenderer(width, height, {
+      view: this.canvas,
+      antialias: true,
+      resolution: 2
+    })
     this.refs.sceneCanvas.appendChild(this.renderer.view)
 
     this.stage = new PIXI.Container()
@@ -70,5 +85,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   control: control,
   noteUp: noteUp,
-  noteDown: noteDown
+  noteDown: noteDown,
+  sendRTC: sendRTC
 })(Grid)

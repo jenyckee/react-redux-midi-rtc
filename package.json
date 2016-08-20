@@ -62,6 +62,12 @@
         "DEBUG": "app:*"
       }
     },
+    "start:prod": {
+      "command": "babel-node bin/server",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
     "test": {
       "command": "babel-node ./node_modules/karma/bin/karma start build/karma.conf",
       "env": {

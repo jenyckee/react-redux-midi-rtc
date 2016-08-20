@@ -129,8 +129,8 @@ export class Scene extends React.Component<void, Props, void> {
 			if (this.points3[i] > this.tpoint3[i]) { this.tpoint3[i] = this.tpoint3[i] + 1 }
 			if (this.points3[i] < this.tpoint3[i]) { this.tpoint3[i] = this.tpoint3[i] - 1 }
 
-      let zoom = this.props.midi.get(37) ? this.props.midi.get(37)/127 : 0
-      let skew = this.props.midi.get(36) ? this.props.midi.get(36)/127 : 0
+      let zoom = this.props.midi.get(1) ? this.props.midi.get(1)/127 : 0
+      let skew = this.props.midi.get(2) ? this.props.midi.get(2)/127 : 0
 
 
 			x3d = this.tpoint1[i] * zoom * 2

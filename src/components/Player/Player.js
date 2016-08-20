@@ -2,6 +2,7 @@ import React from 'react'
 import Note from '../Note'
 import Knob from '../Knob'
 import Grid from '../Grid'
+import Scene from '../Scene'
 import teoria from 'teoria'
 
 class Player extends React.Component {
@@ -31,16 +32,7 @@ class Player extends React.Component {
 
     return (
       <div>
-        <h1>{sbase + ' ' + sscale}</h1>
-        <Grid />
-        <div>{octavesc5}</div>
-        <div>{octavesc4}</div>
-        <div>{octavesc3}</div>
-        <div>{octavesc2}</div>
-        <div>{octavesc1}</div>
-        <Knob channel={1}/>
-        <Knob channel={2}/>
-
+        <Scene />
       </div>
     )
   }

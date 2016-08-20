@@ -56,7 +56,6 @@ export function connectionRTC (c) {
 }
 
 export function openRTC (id) {
-  console.log('OPEN', id)
   return {
     type: OPEN,
     connectionId: id

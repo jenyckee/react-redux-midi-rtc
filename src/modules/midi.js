@@ -37,7 +37,6 @@ export const asyncRequestMIDI = (): Function => {
 }
 
 export function midiMessage (event) {
-  console.log('midi message :', event)
   return (dispatch, getState) => {
     return new Promise((resolve) => {
       dispatch(emitRTC(event.data))
@@ -116,7 +115,6 @@ const ACTION_HANDLERS = {
       case MIDI_MESSAGES.noteOFF:
         return state.delete(action.data[1])
       case MIDI_MESSAGES.control:
-        console.log(action)
         return state.set(action.data[1], action.data[2])
       default:
         return state

@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classnames from 'classnames'
-import { control } from '../redux/modules/midi'
+import { control } from '../../modules/midi'
 
 import PIXI from "pixi.js"
-import pixel from "../static/pixel.png"
+import pixel from "../../static/pixel.png"
 
 export class Scene extends React.Component<void, Props, void> {
 
@@ -129,8 +129,8 @@ export class Scene extends React.Component<void, Props, void> {
 			if (this.points3[i] > this.tpoint3[i]) { this.tpoint3[i] = this.tpoint3[i] + 1 }
 			if (this.points3[i] < this.tpoint3[i]) { this.tpoint3[i] = this.tpoint3[i] - 1 }
 
-      let zoom = this.props.midiState.get(37) ? this.props.midiState.get(37)/127 : 0
-      let skew = this.props.midiState.get(36) ? this.props.midiState.get(36)/127 : 0
+      let zoom = this.props.midi.get(37) ? this.props.midi.get(37)/127 : 0
+      let skew = this.props.midi.get(36) ? this.props.midi.get(36)/127 : 0
 
 
 			x3d = this.tpoint1[i] * zoom * 2
@@ -164,7 +164,7 @@ export class Scene extends React.Component<void, Props, void> {
 }
 
 const mapStateToProps = (state) => ({
-  control: state.control
+  midi: state.midi
 })
 export default connect(mapStateToProps, {
   control: control

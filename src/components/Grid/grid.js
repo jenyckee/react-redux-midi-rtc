@@ -60,7 +60,7 @@ export class Grid extends React.Component<void, Props, void> {
 
   animate() {
     this.graphics.clear()
-    var color = this.props.midi.get(60) ? 0xFF0000 : 0xFFFFFF
+    var color = this.props.midi.get(60) ? 0xFA8080 : 0xFFFFFF
     this.graphics.lineStyle(0)
     this.graphics.beginFill(color, 0.5)
     this.graphics.drawCircle(200,200, this.props.midi.get(37) ? this.props.midi.get(37) /127*50 : 20)

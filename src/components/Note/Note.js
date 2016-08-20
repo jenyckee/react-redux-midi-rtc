@@ -9,7 +9,7 @@ export class Note extends React.Component<void, Props, void> {
   classList () {
     return cx({
       [classes.note]: true,
-      [classes.played]: this.props.midi.get(this.props.note)
+      [classes.played]: this.props.value
     })
   }
   noteDown () {
@@ -21,15 +21,16 @@ export class Note extends React.Component<void, Props, void> {
     this.props.noteUp(this.props.note, 0x7f)
   }
   render () {
+    console.log('note updated')
     return (
       <div className={this.classList()} onMouseDown={this.noteDown.bind(this)} onMouseUp={this.noteUp.bind(this)}></div>
     )
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownprops) => {
   return ({
-    midi: state.midi,
+    value: state.midi.get(ownprops.note),
     connectionId: state.dataChannel.get('connectionId')
   })
 }

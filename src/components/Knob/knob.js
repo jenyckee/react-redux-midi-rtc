@@ -20,7 +20,7 @@ export class Knob extends React.Component<void, Props, void> {
   }
 
   value = () => {
-    return this.props.midi.get(this.props.channel) || 0
+    return this.props.value || 0
   }
 
   render () {
@@ -34,9 +34,9 @@ export class Knob extends React.Component<void, Props, void> {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownprops) => {
   return ({
-    midi: state.midi,
+    value: state.midi.get(ownprops.channel),
     connectionId: state.dataChannel.get('connectionId')
   })
 }

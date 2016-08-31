@@ -21,7 +21,7 @@ const mapActionCreators = {
 
 const mapStateToProps = (state) => {
   return {
-    connectionId: state.dataChannel.connectionId,
+    connected: state.dataChannel.get('peers').size > 0,
     midi: state.midi
   }
 }

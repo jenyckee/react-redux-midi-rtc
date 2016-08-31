@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 // import classnames from 'classnames'
 import { control, noteDown, noteUp } from '../../modules/midi'
 import { sendRTC } from '../../modules/dataChannel'
-
+import _ from 'underscore'
 
 import PIXI from "pixi.js"
 
@@ -19,9 +19,22 @@ export class Grid extends React.Component<void, Props, void> {
     this.props.sendRTC([0x80, 60, 0x7f])
   }
 
+  point(n,i) {
+    var marginx = 10,
+        marginy = 10
+
+    return {
+      x: n+(i*marginx),
+      y: marginy
+    }
+  }
+
   componentDidMount() {
     var width = 800,
         height = 600
+
+    this.blocks = _.range(1,80).map((n,i) => this.point(n,i))
+    this.t = 0
 
     this.canvas = window.document.createElement("canvas")
     this.canvas.style.width = width + "px"
@@ -58,17 +71,28 @@ export class Grid extends React.Component<void, Props, void> {
     this.onUp = this.onUp.bind(this)
   }
 
-  animate() {
+  animate(t) {
     this.graphics.clear()
-    var color = this.props.midi.get(60) ? 0xFA8080 : 0xFFFFFF
-    this.graphics.lineStyle(0)
-    this.graphics.beginFill(color, 0.5)
-    this.graphics.drawCircle(200,200, this.props.midi.get(37) ? this.props.midi.get(37) /127*50 : 20)
+    var color = 0xFFFFFF
+    this.t += 1
+    var freq = 1
+
+    this.blocks.forEach((block,i) => {
+      this.graphics.beginFill(color, 1)
+      this.graphics.drawRect(block.x,
+        50*Math.sin(freq*this.props.midi.get(1)/127*(this.t/4+i))+300, 5, 5)
+    })
+
     this.graphics.interactive = true
     this.graphics.endFill()
 
     this.renderer.render(this.stage)
+    this.renderer.backgroundColor = 0x00000
     this.frame = requestAnimationFrame(this.animate)
+  }
+
+  shouldComponentUpdate() {
+    return false
   }
 
   render () {

@@ -9,38 +9,31 @@ import PIXI from "pixi.js"
 
 export class Grid extends React.Component<void, Props, void> {
 
-  onDown(event) {
-    this.props.noteDown(60)
+  noteDown(note) {
+    this.props.noteDown(60)// note)
     this.props.sendRTC([0x90, 60, 0x7f])
   }
 
-  onUp (event) {
-    this.props.noteUp(60)
+  noteUp(note) {
+    this.props.noteUp(60)// note)
     this.props.sendRTC([0x80, 60, 0x7f])
   }
 
-  point(n,i) {
-    var marginx = 10,
-        marginy = 10
-
-    return {
-      x: n+(i*marginx),
-      y: marginy
-    }
+  resize () {
+    this.w = window.innerWidth
+    this.h = window.innerHeight
+    // this.renderer.resize(this.w, this.h)
+    this.canvas.style.width = this.w + "px"
+    this.canvas.style.height = this.h + "px"
   }
 
   componentDidMount() {
-    var width = 800,
-        height = 600
-
-    this.blocks = _.range(1,80).map((n,i) => this.point(n,i))
-    this.t = 0
+    this.w = window.innerWidth
+    this.h = window.innerHeight
 
     this.canvas = window.document.createElement("canvas")
-    this.canvas.style.width = width + "px"
-    this.canvas.style.height = height + "px"
 
-    this.renderer = new PIXI.CanvasRenderer(width, height, {
+    this.renderer = new PIXI.CanvasRenderer(this.w, this.h, {
       view: this.canvas,
       antialias: true,
       resolution: 2
@@ -54,40 +47,41 @@ export class Grid extends React.Component<void, Props, void> {
     this.graphics = new PIXI.Graphics()
 
     this.stage.addChild(this.graphics)
-    this.graphics.on('mousedown', this.onDown)
-    this.graphics.on('mouseup', this.onUp)
-    this.graphics.on('touchstart', this.onDown)
-    this.graphics.on('touchend', this.onUp)
+    this.graphics.on('mousedown', this.noteDown)
+    this.graphics.on('mouseup', this.noteUp)
+    this.graphics.on('touchstart', this.noteDown)
+    this.graphics.on('touchend', this.noteUp)
+    this.graphics.on('mouseout', this.noteUp)
 
-    this.graphics.on('mouseout', this.onUp)
-
+    window.addEventListener('resize', _.debounce(this.resize.bind(this), 300))
+    this.resize()
     this.animate()
   }
 
   constructor( props ) {
     super(props)
     this.animate = this.animate.bind(this)
-    this.onDown = this.onDown.bind(this)
-    this.onUp = this.onUp.bind(this)
+    this.noteDown = this.noteDown.bind(this)
+    this.noteUp = this.noteUp.bind(this)
+  }
+
+  draw(t, graphics, renderer) {
+    var white = 0xFFFFFF,
+        black = 0x000000
+
+    this.graphics.beginFill(white, 1)
+    this.graphics.drawRect(0,0, 50, 50)
+
+    graphics.interactive = true
+    graphics.endFill()
+
+    renderer.render(this.stage)
+    renderer.backgroundColor = black
   }
 
   animate(t) {
     this.graphics.clear()
-    var color = 0xFFFFFF
-    this.t += 1
-    var freq = 1
-
-    this.blocks.forEach((block,i) => {
-      this.graphics.beginFill(color, 1)
-      this.graphics.drawRect(block.x,
-        50*Math.sin(freq*this.props.midi.get(1)/127*(this.t/4+i))+300, 5, 5)
-    })
-
-    this.graphics.interactive = true
-    this.graphics.endFill()
-
-    this.renderer.render(this.stage)
-    this.renderer.backgroundColor = 0x00000
+    this.draw(t, this.graphics, this.renderer)
     this.frame = requestAnimationFrame(this.animate)
   }
 
@@ -104,7 +98,8 @@ export class Grid extends React.Component<void, Props, void> {
 }
 
 const mapStateToProps = (state) => ({
-  midi: state.midi
+  midi: state.midi,
+  scenesrc: eval(state.dataChannel.get('scenesrc'))
 })
 export default connect(mapStateToProps, {
   control: control,

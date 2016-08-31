@@ -173,6 +173,7 @@ const initialState = Immutable.Map({
     connectionId: '',
     connection: null,
     peers: Immutable.List(),
+    scenesrc: '(function () { console.log("halleluja") })'
   })
 export default function reducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]

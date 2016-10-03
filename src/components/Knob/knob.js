@@ -7,7 +7,7 @@ import Slider from 'rc-slider'
 
 import 'rc-slider/assets/index.css'
 
-export class Knob extends React.Component<void, Props, void> {
+export class Knob extends React.Component {
   classList () {
     return cx({
       knob: true

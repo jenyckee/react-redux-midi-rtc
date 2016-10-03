@@ -3,6 +3,8 @@ import CoreLayout from '../layouts/CoreLayout/CoreLayout'
 import { injectReducer } from '../store/reducers'
 import Home from './Home'
 import PlayerRoute from './Player'
+import SceneRoute from './Scene'
+
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
@@ -12,7 +14,8 @@ export const createRoutes = (store) => ({
   component: CoreLayout,
   indexRoute: Home,
   childRoutes: [
-    PlayerRoute(store)
+    PlayerRoute(store),
+    SceneRoute(store)
   ]
 })
 

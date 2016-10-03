@@ -18,13 +18,35 @@ class Player extends React.Component {
     return false
   }
 
+  scale(base, scale) {
+    let baseNote = teoria.note(base)
+    return baseNote.scale(scale).notes().map(n => n.midi())
+  }
+
   render () {
+    let scale = this.scale('C', 'major'),
+        ocatve = scale.push(scale[0]+12),
+        octavesc1 = scale.map((midi) => <Note note={midi} key={midi}/>),
+        octavesc2 = scale.map((midi) => <Note note={midi+5} key={midi}/>),
+        octavesc3 = scale.map((midi) => <Note note={midi+9} key={midi}/>)
+
     return (
       <div>
-        <Grid />
+        <div>{octavesc3}</div>
+        <div>{octavesc2}</div>
+        <div>{octavesc1}</div>
+        <Knob channel={0}/>
       </div>
     )
+
   }
+  // render () {
+  //   return (
+  //     <div>
+  //       <Scene />
+  //     </div>
+  //   )
+  // }
 }
 
 export default Player

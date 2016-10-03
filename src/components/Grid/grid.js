@@ -66,10 +66,13 @@ export class Grid extends React.Component<void, Props, void> {
   }
 
   draw(t, graphics, renderer) {
-    var white = 0xFFFFFF,
-        black = 0x000000
+    let white = 0xFFFFFF,
+        black = 0x000000,
+        red = 0xFF0000,
+        color = this.props.midi.get(60) ? red : white
 
-    this.graphics.beginFill(white, 1)
+
+    this.graphics.beginFill(color, 1)
     this.graphics.drawRect(0,0, 50, 50)
 
     graphics.interactive = true

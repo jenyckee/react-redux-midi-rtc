@@ -9,6 +9,11 @@ import pixel from "../../static/pixel.png"
 export class Scene extends React.Component<void, Props, void> {
 
   componentDidMount() {
+    this.props.initRTC('bnon5rifq5dygb9', 3)
+    .then(() => {
+      this.props.connectRTC(this.props.routeParams.id)
+    })
+
     this.w = 1024
   	this.h = 768
 
@@ -29,13 +34,13 @@ export class Scene extends React.Component<void, Props, void> {
     this.zoom = 1
 
     this.start()
-    window.addEventListener("keydown", (e) => {
-      if (this.current < 3)
-        this.current++
-      else
-        this.current = 1
-      this.makeObject(this.current)
-    }, true);
+    // window.addEventListener("keydown", (e) => {
+    //   if (this.current < 3)
+    //     this.current++
+    //   else
+    //     this.current = 1
+    //   this.makeObject(this.current)
+    // }, true)
   }
 
   start() {

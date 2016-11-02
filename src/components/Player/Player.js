@@ -8,7 +8,7 @@ import teoria from 'teoria'
 class Player extends React.Component {
 
   componentDidMount() {
-    this.props.initRTC('bnon5rifq5dygb9', 3)
+    this.props.initRTC('bnon5rifq5dygb9', 0)
     .then(() => {
       this.props.connectRTC(this.props.routeParams.id)
     })
@@ -23,30 +23,32 @@ class Player extends React.Component {
     return baseNote.scale(scale).notes().map(n => n.midi())
   }
 
-  render () {
-    let scale = this.scale('C', 'major'),
-        ocatve = scale.push(scale[0]+12),
-        octavesc1 = scale.map((midi) => <Note note={midi} key={midi}/>),
-        octavesc2 = scale.map((midi) => <Note note={midi+5} key={midi}/>),
-        octavesc3 = scale.map((midi) => <Note note={midi+9} key={midi}/>)
-
-    return (
-      <div>
-        <div>{octavesc3}</div>
-        <div>{octavesc2}</div>
-        <div>{octavesc1}</div>
-        <Knob channel={0}/>
-      </div>
-    )
-
-  }
   // render () {
+  //   let scale = this.scale('C', 'major'),
+  //       ocatve = scale.push(scale[0]+12),
+  //       octavesc1 = scale.map((midi) => <Note note={midi} key={midi}/>),
+  //       octavesc2 = scale.map((midi) => <Note note={midi+5} key={midi}/>),
+  //       octavesc3 = scale.map((midi) => <Note note={midi+9} key={midi}/>)
+  //
   //   return (
   //     <div>
-  //       <Scene />
+  //       <div>{octavesc3}</div>
+  //       <div>{octavesc2}</div>
+  //       <div>{octavesc1}</div>
+  //       <Knob channel={0}/>
   //     </div>
   //   )
+  //
   // }
+
+
+  render () {
+    return (
+      <div>
+        <Grid />
+      </div>
+    )
+  }
 }
 
 export default Player

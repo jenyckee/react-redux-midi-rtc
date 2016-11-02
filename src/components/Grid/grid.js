@@ -4,10 +4,12 @@ import { connect } from 'react-redux'
 import { control, noteDown, noteUp } from '../../modules/midi'
 import { sendRTC } from '../../modules/dataChannel'
 import _ from 'underscore'
+import * as Babel from 'babel-standalone'
 
-import PIXI from "pixi.js"
+import PIXI from 'pixi.js'
+import * as p5 from 'p5'
 
-export class Grid extends React.Component<void, Props, void> {
+export class Grid extends React.Component {
 
   noteDown(note) {
     this.props.noteDown(60)// note)
@@ -88,21 +90,27 @@ export class Grid extends React.Component<void, Props, void> {
     this.frame = requestAnimationFrame(this.animate)
   }
 
-  shouldComponentUpdate() {
-    return false
+  evaluate(code, context) {
+    let compiled = Babel.transform(code, { presets: ['react'] }).code
+    var scope = { rectangle :  this.animate }
+    // with(scope) {
+    //   eval(compiled)
+    // }
   }
 
   render () {
+    // this.evaluate(this.props.scenesrc)
+
+
     return (
-      <div className="scene-wrapper" ref="sceneCanvas">
-      </div>
+      <div className="scene-wrapper" ref="sceneCanvas"></div>
     )
   }
 }
 
 const mapStateToProps = (state) => ({
   midi: state.midi,
-  scenesrc: eval(state.dataChannel.get('scenesrc'))
+  scenesrc: state.dataChannel.get('scenesrc')
 })
 export default connect(mapStateToProps, {
   control: control,

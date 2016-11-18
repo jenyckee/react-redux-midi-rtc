@@ -1,64 +1,79 @@
 import PIXI from 'pixi.js'
 import _ from 'underscore'
 
-function draw(state, env, t) {
-  var white = 0xFFFFFF,
-      black = 0x000000,
-      red = 0xFF0000,
-      color = state.midi.get(60) ? red : white
+export default class renderer {
+  constructor(canvas, state) {
+    let w = window.innerWidth,
+        h = window.innerHeight
 
-  env.graphics.beginFill(color, 1)
-  env.graphics.drawRect(0,0, 50, 50)
+    this.canvas = canvas
 
-  env.graphics.interactive = true
-  env.graphics.endFill()
-
-  env.renderer.render(env.stage)
-  env.renderer.backgroundColor = black
-}
-
-function setup(env) {
-  let graphics = new PIXI.Graphics(),
-      stage = new PIXI.Container()
-
-  stage.width = window.width
-  stage.height = window.height
-  stage.addChild(graphics)
-  graphics.on('mousedown', () => env.noteDown(60))
-  graphics.on('mouseup', () => env.noteUp(60))
-  graphics.on('touchstart', () => env.noteDown(60))
-  graphics.on('touchend', () => env.noteUp(60))
-  graphics.on('mouseout', () => env.noteUp(60))
-
-  return _.extend(env, { graphics: graphics, stage: stage })
-}
-
-function animate(state, env) {
-  let loop = (t) => {
-    draw(state, setup(env), t)
-    requestAnimationFrame(loop)
+    this.renderer = new PIXI.CanvasRenderer(w, h, {
+      view: canvas,
+      antialias: true,
+      resolution: window.devicePixelRatio
+    })
+    this.resize(canvas)
+    window.addEventListener('resize', _.debounce(() => this.resize(canvas), 300))
+    this.setup(state)
+    this.render(state)
   }
-  loop()
-}
 
-function renderer(canvas) {
-  let w = window.innerWidth,
-      h = window.innerHeight,
-      renderer = new PIXI.CanvasRenderer(w, h, {
-        view: canvas,
-        antialias: true,
-        resolution: window.devicePixelRatio
-      })
-  resize(canvas)
-  window.addEventListener('resize', _.debounce(() => resize(canvas), 300))
-  return (state, noteDown, noteUp) => animate(state, { renderer: renderer, noteDown: noteDown, noteUp: noteUp })
-}
+  resize(canvas) {
+    let w = window.innerWidth,
+        h = window.innerHeight
+    this.canvas.style.width = w + "px"
+    this.canvas.style.height = h + "px"
+  }
 
-function resize(canvas) {
-  let w = window.innerWidth,
-      h = window.innerHeight
-  canvas.style.width = w + "px"
-  canvas.style.height = h + "px"
-}
+  draw(state) {
+    var white = 0xFFFFFF,
+        black = 0x000000,
+        red = 0xFF0000,
+        color = state.midi.get(60) ? red : white
 
-export default renderer
+    this.graphics.beginFill(color, 1)
+    this.graphics.drawRect(0,0, 50, 50)
+
+    this.graphics.interactive = true
+    this.graphics.endFill()
+
+    this.renderer.render(this.stage)
+    this.renderer.backgroundColor = black
+  }
+
+  noteDown(state, note) {
+    state.noteDown(60)// note)
+    state.sendRTC([0x90, 60, 0x7f])
+  }
+
+  noteUp(state, note) {
+    state.noteUp(60)// note)
+    state.sendRTC([0x80, 60, 0x7f])
+  }
+
+  setup(state) {
+    this.graphics = new PIXI.Graphics()
+    this.stage = new PIXI.Container()
+
+    this.stage.width = window.width
+    this.stage.height = window.height
+    this.stage.addChild(this.graphics)
+    this.graphics.on('mousedown', () => this.noteDown(state, 60))
+    this.graphics.on('mouseup', () => this.noteUp(state, 60))
+    this.graphics.on('touchstart', () => this.noteDown(state, 60))
+    this.graphics.on('touchend', () => this.noteUp(state, 60))
+    this.graphics.on('mouseout', () => this.noteUp(state, 60))
+  }
+
+  update(state) {
+    window.cancelAnimationFrame(this.requestId)
+    this.render(state)
+  }
+
+  render(state) {
+    this.draw(state)
+    this.requestId = requestAnimationFrame(() => this.render(state))
+  }
+
+}

@@ -27,7 +27,7 @@ export class Knob extends React.Component {
     const wrapperStyle = { margin: 50 }
 
     return (
-      <div className={this.classList()} style={wrapperStyle}>
+      <div className='slider' style={wrapperStyle}>
         <Slider min={0} max={127} defaultValue={this.value()} onChange={this.handleSliderChange} value={this.value()} />
       </div>
     )

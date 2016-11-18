@@ -21,4 +21,9 @@
   *:after {
     box-sizing: inherit;
   }
+  .slider {
+    top: 0;
+    width: 50%;
+    position: absolute;
+  }
 }

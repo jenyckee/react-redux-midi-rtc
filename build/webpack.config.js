@@ -49,6 +49,10 @@ webpackConfig.output = {
 // Plugins
 // ------------------------------------
 webpackConfig.plugins = [
+  new webpack.ProvidePlugin({
+    'R': 'ramda',
+    'PIXI': 'pixi.js'
+  }),
   new webpack.DefinePlugin(config.globals),
   new HtmlWebpackPlugin({
     template: paths.client('index.html'),

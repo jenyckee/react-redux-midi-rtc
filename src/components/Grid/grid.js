@@ -12,7 +12,6 @@ import PIXI from 'pixi.js'
 
 import Renderer from '../../renderer'
 
-
 export class Grid extends React.Component {
 
   componentDidMount() {
